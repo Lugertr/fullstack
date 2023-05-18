@@ -9,7 +9,7 @@
                 <v-icon icon="mdi-account-circle"></v-icon>
               </v-avatar>
             </template>
-            <v-list-item-title v-text="appName"></v-list-item-title>
+            <v-list-item-title ></v-list-item-title>
             <v-list-item-subtitle>ADMIN MENU</v-list-item-subtitle>
           </v-list-item>
         </v-list>
@@ -19,17 +19,27 @@
         <v-list density="compact" nav>
           <v-list-item
             prepend-icon="mdi-folder"
-            title="My Files"
+            title="Клиенты"
             value="myfiles"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-account-multiple"
-            title="Shared with me"
+            title="Аппартаменты"
             value="shared"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-star"
-            title="Starred"
+            title="Типы аппартаменты"
+            value="starred"
+          ></v-list-item>
+          <v-list-item
+            prepend-icon="mdi-star"
+            title="Услуги"
+            value="starred"
+          ></v-list-item>
+          <v-list-item
+            prepend-icon="mdi-star"
+            title="Типы услуг"
             value="starred"
           ></v-list-item>
         </v-list>

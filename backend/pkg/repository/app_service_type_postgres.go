@@ -82,8 +82,8 @@ func (r *AppServiceTypePostgres) Update(serviceId int, input hotel.AppServiceTyp
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.service_type_id = %d",
-		appServiceTypeTable, setQuery, serviceId)
+	query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.service_type_id = $%d",
+		appServiceTypeTable, setQuery, argId)
 
 	args = append(args, serviceId)
 

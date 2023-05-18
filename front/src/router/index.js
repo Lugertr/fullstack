@@ -1,16 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 import store from "../store/index.js";
 
 const routes = [
-  {
-    path: "/home",
-    name: "home",
-    component: HomeView,
-    meta: {
-      requiresAuth: true
-    }
-  },
   {
     path: '/login',
     component: () => import('../components/log/AuthorizationComp.vue'),
@@ -26,13 +17,48 @@ const routes = [
     }
   },
   {
-    path: '/register',
-    component: () => import('../components/log/RegistrationComp.vue'),
+    path: '/clients',
+    component: () => import('../components/client/ClientTable.vue'),
     meta: {
       requiresAuth: false
     }
   },
-  { path: '/:catchAll(.*)', redirect: '/home' }
+  {
+    path: '/apps',
+    component: () => import('../components/log/AuthorizationComp.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/app-types',
+    component: () => import('../components/log/AuthorizationComp.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/services',
+    component: () => import('../components/log/AuthorizationComp.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/service-types',
+    component: () => import('../components/log/AuthorizationComp.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/users',
+    component: () => import('../components/log/AuthorizationComp.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  { path: '/:catchAll(.*)', redirect: '/clients' }
 ];
 
 

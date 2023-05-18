@@ -75,8 +75,8 @@ func (r *AppTypePostgres) Update(appTypeId int, input hotel.AppTypeUpdate) error
 
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.app_type_id = %d",
-		appTypeTable, setQuery, appTypeId)
+	query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.app_type_id = $%d",
+		appTypeTable, setQuery, argId)
 
 	args = append(args, appTypeId)
 

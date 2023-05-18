@@ -12,29 +12,27 @@ type UsersList struct {
 
 //клиент
 type Client struct {
-	Client_id      int    `json:"client_id" db:"client_id"`
-	Client_name    string `json:"client_name" db:"client_name"`
-	Family_name    string `json:"family_name" db:"family_name"`
-	Surname        string `json:"surname" db:"surname"`
-	Passport       string `json:"passport" db:"passport"`
-	Gender         string `json:"gender" db:"gender"`
-	App_id         int    `json:"app_id" db:"app_id"`
-	Date_in        string `json:"date_in" db:"date_in"`
-	Date_out       string `json:"date_out" db:"date_out"`
-	Client_type_id int    `json:"client_type_id" db:"client_type_id"`
-	Done           bool   `json:"done" db:"done"`
+	Client_id   int    `json:"client_id" db:"client_id"`
+	Client_name string `json:"client_name" db:"client_name"`
+	Family_name string `json:"family_name" db:"family_name"`
+	Surname     string `json:"surname" db:"surname"`
+	Passport    string `json:"passport" db:"passport"`
+	Gender      string `json:"gender" db:"gender"`
+	App_id      int    `json:"app_id" db:"app_id"`
+	Date_in     string `json:"date_in" db:"date_in"`
+	Date_out    string `json:"date_out" db:"date_out"`
+	Done        bool   `json:"done" db:"done"`
 }
 
 type ClientUpdate struct {
-	Client_name    *string `json:"client_name"`
-	Family_name    *string `json:"family_name"`
-	Surname        *string `json:"surname"`
-	Passport       *string `json:"passport"`
-	Gender         *string `json:"gender"`
-	App_id         *int    `json:"app_id"`
-	Date_in        *string `json:"date_in"`
-	Date_out       *string `json:"date_out"`
-	Client_type_id *int    `json:"client_type_id"`
+	Client_name *string `json:"client_name"`
+	Family_name *string `json:"family_name"`
+	Surname     *string `json:"surname"`
+	Passport    *string `json:"passport"`
+	Gender      *string `json:"gender"`
+	App_id      *int    `json:"app_id"`
+	Date_in     *string `json:"date_in"`
+	Date_out    *string `json:"date_out"`
 }
 
 //номера отелей

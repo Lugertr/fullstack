@@ -1,41 +1,57 @@
 <template>
-  <v-container fluid>
-    <v-card max-width="800" class="mx-auto">
-      <v-card-title>
-        Login
-      </v-card-title>
+  <v-container class="d-flex justify-center align-center h-100">
+    <v-card :width="'500px'">
+      <v-card-title class="headline">Login</v-card-title>
       <v-card-text>
-        <v-form @submit.prevent="login">
-          <v-text-field label="Email" v-model="email"></v-text-field>
-          <v-text-field label="Password" v-model="password" type="password"></v-text-field>
-          <v-btn type="submit">Log In</v-btn>
+        <v-form v-on:submit.prevent="submitForm">
+          <v-text-field v-model="username" :rules="[v => !!v || 'Username is required']" label="Username"
+            required></v-text-field>
+          <v-text-field v-model="password" :rules="[v => !!v || 'Password is required']" label="Password" type="password"
+            required></v-text-field>
+          <v-btn type="submit" color="primary">Login</v-btn>
+          <router-link to="/register">
+            <span class="purple pa-md-4">Нет аккаунта?</span>
+          </router-link>
         </v-form>
       </v-card-text>
     </v-card>
   </v-container>
+  <error-modal v-if="showError" :errMes="errMes" @close-error-modal="closeErrorModal"></error-modal>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import ErrorModal from '@/components/ErrModal.vue';
+
 export default {
-  data () {
+  components: { ErrorModal },
+  data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      showError: false,
+      errMes: null,
     }
   },
   methods: {
-    async login () {
-      // call Vuex login action to make API request
-      await this.$store.dispatch('login', {
-        email: this.email,
-        password: this.password
+    ...mapActions(['authenticate']),
+    async submitForm() {
+      this.authenticate({
+        username: this.username,
+        password: this.password,
+      }).then(() => {
+        this.$router.push('/')
+      }).catch(error => {
+        const err =  error?.response?.status + error?.response?.data.message;
+        console.log(err)
+        this.errMes = err;
+        this.showError = true;
       })
 
-      // redirect to dashboard on success
-      if (this.$store.state.token) {
-        this.$router.push('/dashboard')
-      }
+    },
+    closeErrorModal() {
+      this.showError = false;
     }
-  }
+  },
 }
 </script>

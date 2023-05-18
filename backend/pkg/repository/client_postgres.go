@@ -24,7 +24,7 @@ func (r *ClientPostgres) Create(client hotel.Client) (int, error) {
 	}
 
 	var id int
-	createclientQuery := fmt.Sprintf("INSERT INTO %s (title, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id", clientTable)
+	createclientQuery := fmt.Sprintf("INSERT INTO %s (client_id, client_name,family_name,surname,passport,gender,app_id,date_in,date_out) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING client_id", clientTable)
 	row := tx.QueryRow(createclientQuery,
 		client.Client_id,
 		client.Client_name,
@@ -35,7 +35,6 @@ func (r *ClientPostgres) Create(client hotel.Client) (int, error) {
 		client.App_id,
 		client.Date_in,
 		client.Date_out,
-		client.Client_type_id,
 	)
 	if err := row.Scan(&id); err != nil {
 		tx.Rollback()
@@ -123,16 +122,10 @@ func (r *ClientPostgres) Update(clientId int, input hotel.ClientUpdate) error {
 		argId++
 	}
 
-	if input.Client_type_id != nil {
-		setValues = append(setValues, fmt.Sprintf("client_type_id=$%d", argId))
-		args = append(args, *input.Client_type_id)
-		argId++
-	}
-
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.client_id = %d",
-		clientTable, setQuery, clientId)
+	query := fmt.Sprintf("UPDATE %s tl SET %s WHERE tl.client_id=$%d",
+		clientTable, setQuery, argId)
 
 	args = append(args, clientId)
 
