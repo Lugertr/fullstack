@@ -9,9 +9,6 @@
           <v-text-field v-model="password" :rules="[v => !!v || 'Password is required']" label="Password" type="password"
             required></v-text-field>
           <v-btn type="submit" color="primary">Login</v-btn>
-          <router-link to="/register">
-            <span class="purple pa-md-4">Нет аккаунта?</span>
-          </router-link>
         </v-form>
       </v-card-text>
     </v-card>

@@ -8,7 +8,7 @@ import (
 
 type Authorization interface {
 	CreateUser(user hotel.User) (int, error)
-	GetUser(username, password string) (hotel.User, error)
+	GetUser(username, password string) (hotel.UserRet, error)
 }
 
 type Client interface {

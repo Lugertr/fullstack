@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-container>
-            <h1 style="text-align: center">Клиенты</h1>
+            <h1 style="text-align: center">Таблица</h1>
             <v-row justify="end" class="pa-ma-5">
                 <v-btn variant="tonal" class="ma-2" color="teal" @click="openModal(null)"> add </v-btn>
             </v-row>
@@ -10,62 +10,49 @@
             <thead class="bg-amber-lighten-3">
                 <tr>
                     <th class="text-left">id</th>
-                    <th class="text-left">Имя</th>
-                    <th class="text-left">Фамилия</th>
-                    <th class="text-left">Отечество</th>
-                    <th class="text-left">Паспорт</th>
-                    <th class="text-left">Пол</th>
-                    <th class="text-left">Номер</th>
-                    <th class="text-left">Заезд</th>
-                    <th class="text-left">Отъезд</th>
+                    <th class="text-left">Название услуги</th>
+                    <th class="text-left">Цена</th>
                     <th width="10%"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="client in clients || []" :key="client?.client_id" class="pa-5">
-                    <td>{{ client.client_id }}</td>
-                    <td>{{ client.client_name }}</td>
-                    <td>{{ client.family_name }}</td>
-                    <td>{{ client.surname }}</td>
-                    <td>{{ client.passport }}</td>
-                    <td>{{ client.gender }}</td>
-                    <td>{{ client.app_id }}</td>
-                    <td>{{ client.date_in }}</td>
-                    <td>{{ client.date_out }}</td>
+                <tr v-for="service_type in service_types || []" :key="service_type?.service_type_id" class="pa-5">
+                    <td>{{ service_type.service_type_id }}</td>
+                    <td>{{ service_type.service_type_name }}</td>
+                    <td>{{ service_type.price }}</td>
                     <td class="text-right">
-                        <v-btn @click="openModal(client)">Изменить</v-btn>
-                        <v-btn @click="deleteItem(client.client_id)" variant="tonal" class="ms-5" color="error"> delete </v-btn>
-                        <v-btn variant="tonal" class="ms-5" color="primary"> Чек </v-btn>
+                        <v-btn @click="openModal(service_type)">Изменить</v-btn>
+                        <v-btn @click="deleteItem(service_type.service_type_id)" variant="tonal" class="ms-5" color="error"> delete </v-btn>
                     </td>
                 </tr>
             </tbody>
         </v-table>
     </v-container>
     <div>
-        <client-modal v-if="modalOpen" ref="clientModal" :selectedItem="selectedItem" :length="length" @show-error-modal="showErrorModal"
-            @close-modal="closeModal"></client-modal>
+        <ServiceTypeModal v-if="modalOpen" ref="service_typeModal" :selectedItem="selectedItem" :length="length" @show-error-modal="showErrorModal"
+            @close-modal="closeModal"></ServiceTypeModal>
         <error-modal v-if="showError" :errMes="errMes" @close-error-modal="closeErrorModal"></error-modal>
     </div>
 </template>
 
 <script>
-import ClientModal from '@/components/client/ClientModal.vue';
+import ServiceTypeModal from '@/components/serviceType/ServiceTypeModal.vue';
 import ErrorModal from '@/components/ErrModal.vue';
 import { httpMixin, path } from '@/logic/http';
 import { nextTick } from 'vue'
 
 
 export default {
-    name: "ClientTable",
+    name: "service_typeTable",
     mixins: [httpMixin],
-    components: { ClientModal, ErrorModal },
+    components: { ServiceTypeModal, ErrorModal },
     data() {
         return {
             modalOpen: false,
             showError: false,
             errMes: "",
             selectedItem: null,
-            clients: [],
+            service_types: [],
             length: null,
         };
     },
@@ -74,9 +61,9 @@ export default {
     },
     methods: {
         async getItemsFromBackend() {
-            await this.httpGet(path.client).then(
-                (clients) => {
-                    this.clients = Array.isArray(clients)? clients : [];
+            await this.httpGet(path.appServiceType).then(
+                (service_types) => {
+                    this.service_types = Array.isArray(service_types)? service_types : [];
                 }
             ).catch(error => {
                 const err =  error?.response?.status + error?.response?.data.message;
@@ -86,7 +73,7 @@ export default {
 
         },
         async deleteItem(id) {
-            await this.httpDelete(path.client,id).then(
+            await this.httpDelete(path.appServiceType,id).then(
                 () => {
                     return this.getItemsFromBackend();
                 }
@@ -101,16 +88,15 @@ export default {
                 return
             }
             this.modalOpen = true;
-            console.log(item)
             if (item) {
                 this.length = null;
                 this.selectedItem = item;
             } else {
-                this.length = this.clients.length+1;
+                this.length = this.service_types?.length+1;
                 this.selectedItem = null;
             }
             nextTick(() => {
-                this.$refs.clientModal.dialog = true;
+                this.$refs.service_typeModal.dialog = true;
             })
         },
         showErrorModal(err) {
@@ -118,7 +104,7 @@ export default {
             this.showError = true;
         },
         closeModal() {
-            this.$refs.clientModal.dialog = false;
+            this.$refs.service_typeModal.dialog = false;
             this.modalOpen = false;
             this.getItemsFromBackend();
         },

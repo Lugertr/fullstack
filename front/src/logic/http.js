@@ -76,7 +76,6 @@ export const httpMixin = {
   
   async httpDelete(url,id, config = {}) {
     const token = this.token; 
-    console.log(id);
     return axios.delete(`${this.apiUrl}${url}/${id}`, {
       ...config,
       params: { id: id },

@@ -67,25 +67,25 @@ type AppService struct {
 	Service_id      int `json:"service_id" db:"service_id"`
 	Client_id       int `json:"client_id" db:"client_id"`
 	Service_type_id int `json:"service_type_id" db:"service_type_id"`
-	Days            int `json:"days" db:"days"`
+	Days_count      int `json:"days_count" db:"days_count"`
 }
 
 type AppServiceUpdate struct {
 	Client_id       *int `json:"client_id"`
 	Service_type_id *int `json:"service_type_id"`
-	Days            *int `json:"days"`
+	Days_count      *int `json:"days_count"`
 }
 
 //Типы сервисов
 type AppServiceType struct {
-	Service_type_id int     `json:"service_type_id" db:"service_type_id"`
-	Service_name    string  `json:"service_name" db:"service_name"`
-	Price           float64 `json:"price" db:"price"`
+	Service_type_id   int     `json:"service_type_id" db:"service_type_id"`
+	Service_type_name string  `json:"service_type_name" db:"service_type_name"`
+	Price             float64 `json:"price" db:"price"`
 }
 
 type AppServiceTypeUpdate struct {
-	Service_name *string  `json:"service_name"`
-	Price        *float64 `json:"price"`
+	Service_type_name *string  `json:"service_type_name"`
+	Price             *float64 `json:"price"`
 }
 
 //----------------------------------------------------------------------------

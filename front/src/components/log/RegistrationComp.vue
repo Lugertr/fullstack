@@ -11,7 +11,10 @@
             required></v-text-field>
           <v-btn type="submit" color="primary">Registration</v-btn>
           <router-link to="/login">
-            <span class="purple pa-md-4">Уже есть аккант?</span>
+            <span class="purple pa-md-4">Авторизация</span>
+          </router-link>
+          <router-link to="/client">
+            <span class="purple pa-md-4">Главная</span>
           </router-link>
         </v-form>
       </v-card-text>
@@ -42,9 +45,6 @@ export default {
     ...mapActions(['authenticate']),
     async submitForm() {
       await axios.post('http://localhost:8000/auth/sign-up', { name: this.name, username: this.username, password: this.password }, this.headers)
-        .then(() => {
-          return this.$router.push('/login')
-        })
         .catch((error) => {
           const err =  error?.response?.status + error?.response?.data.message;
           console.log(err)

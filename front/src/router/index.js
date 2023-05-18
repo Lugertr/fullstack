@@ -13,40 +13,40 @@ const routes = [
     path: '/register',
     component: () => import('../components/log/RegistrationComp.vue'),
     meta: {
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
     path: '/clients',
     component: () => import('../components/client/ClientTable.vue'),
     meta: {
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
     path: '/apps',
-    component: () => import('../components/log/AuthorizationComp.vue'),
+    component: () => import('../components/app/AppTable.vue'),
     meta: {
       requiresAuth: true
     }
   },
   {
     path: '/app-types',
-    component: () => import('../components/log/AuthorizationComp.vue'),
+    component: () => import('../components/appType/AppTypeTable.vue'),
     meta: {
       requiresAuth: true
     }
   },
   {
     path: '/services',
-    component: () => import('../components/log/AuthorizationComp.vue'),
+    component: () => import('../components/service/ServiceTable.vue'),
     meta: {
       requiresAuth: true
     }
   },
   {
     path: '/service-types',
-    component: () => import('../components/log/AuthorizationComp.vue'),
+    component: () => import('../components/serviceType/ServiceTypeTable.vue'),
     meta: {
       requiresAuth: true
     }
@@ -69,9 +69,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  console.log(requiresAuth)
+  console.log(to);
   if (requiresAuth !== false) {
-    if (!store.state.token) {
+
+    if (!store.state.token || (to.path == '/register' && !store.state.admin)) {
       next('/login');
     } else {
       next();

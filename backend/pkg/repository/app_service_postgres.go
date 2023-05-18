@@ -24,12 +24,12 @@ func (r *AppServicePostgres) Create(appService hotel.AppService) (int, error) {
 	}
 
 	var id int
-	createappServiceQuery := fmt.Sprintf("INSERT INTO %s (service_id, Client_id, Service_type_id, Days) VALUES ($1, $2, $3, $4) RETURNING id", appServiceTable)
+	createappServiceQuery := fmt.Sprintf("INSERT INTO %s (service_id, client_id, service_type_id, days_count) VALUES ($1, $2, $3, $4) RETURNING service_id", appServiceTable)
 	row := tx.QueryRow(createappServiceQuery,
 		appService.Service_id,
 		appService.Client_id,
 		appService.Service_type_id,
-		appService.Days,
+		appService.Days_count,
 	)
 	if err := row.Scan(&id); err != nil {
 		tx.Rollback()
@@ -81,9 +81,9 @@ func (r *AppServicePostgres) Update(appServiceId int, input hotel.AppServiceUpda
 		argId++
 	}
 
-	if input.Days != nil {
-		setValues = append(setValues, fmt.Sprintf("days=$%d", argId))
-		args = append(args, *input.Days)
+	if input.Days_count != nil {
+		setValues = append(setValues, fmt.Sprintf("days_count=$%d", argId))
+		args = append(args, *input.Days_count)
 		argId++
 	}
 

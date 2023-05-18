@@ -24,10 +24,10 @@ func (r *AppServiceTypePostgres) Create(serviceType hotel.AppServiceType) (int, 
 	}
 
 	var id int
-	createclientQuery := fmt.Sprintf("INSERT INTO %s (Service_type_id, service_name, price) VALUES ($1, $2, $3) RETURNING id", appServiceTypeTable)
+	createclientQuery := fmt.Sprintf("INSERT INTO %s (service_type_id, service_type_name, price) VALUES ($1, $2, $3) RETURNING service_type_id", appServiceTypeTable)
 	row := tx.QueryRow(createclientQuery,
 		serviceType.Service_type_id,
-		serviceType.Service_name,
+		serviceType.Service_type_name,
 		serviceType.Price,
 	)
 	if err := row.Scan(&id); err != nil {
@@ -68,9 +68,9 @@ func (r *AppServiceTypePostgres) Update(serviceId int, input hotel.AppServiceTyp
 	args := make([]interface{}, 0)
 	argId := 1
 
-	if input.Service_name != nil {
-		setValues = append(setValues, fmt.Sprintf("service_name=$%d", argId))
-		args = append(args, *input.Service_name)
+	if input.Service_type_name != nil {
+		setValues = append(setValues, fmt.Sprintf("service_type_name=$%d", argId))
+		args = append(args, *input.Service_type_name)
 		argId++
 	}
 

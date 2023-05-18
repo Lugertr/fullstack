@@ -24,7 +24,7 @@ func (r *AppTypePostgres) Create(appType hotel.AppType) (int, error) {
 	}
 
 	var id int
-	createAppTypeQuery := fmt.Sprintf("INSERT INTO %s (app_type_id, app_type_name) VALUES ($1, $2) RETURNING id", appTypeTable)
+	createAppTypeQuery := fmt.Sprintf("INSERT INTO %s (app_type_id, app_type_name) VALUES ($1, $2) RETURNING app_type_id", appTypeTable)
 	row := tx.QueryRow(createAppTypeQuery,
 		appType.App_type_id,
 		appType.App_type_name,
