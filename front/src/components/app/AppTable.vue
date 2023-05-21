@@ -3,6 +3,7 @@
         <v-container>
             <h1 style="text-align: center">Аппартаменты</h1>
             <v-row justify="end" class="pa-ma-5">
+                <v-btn variant="tonal" class="ma-2" color="teal" @click="appFunc()"> Информация </v-btn>
                 <v-btn variant="tonal" class="ma-2" color="teal" @click="openModal(null)"> add </v-btn>
             </v-row>
         </v-container>
@@ -37,6 +38,21 @@
             @close-modal="closeModal"></AppModal>
         <error-modal v-if="showError" :errMes="errMes" @close-error-modal="closeErrorModal"></error-modal>
     </div>
+    <v-dialog v-model="showSoonBeFree" width="auto">
+            <v-card >
+                <v-card-title>Номера, которые освободятся сегодня или завтра</v-card-title>
+                <v-card-text>
+                    <v-list>
+                        <v-list-item v-for="(item, index) in appSoonBeFree" :key="index">
+                            <v-list-item-title>{{ `Номер: ` + item.app_id }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="primary" text @click="showSoonBeFree = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 </template>
 
 <script>
@@ -59,6 +75,8 @@ export default {
             appTypes: [],
             apps: [],
             length: null,
+            appSoonBeFree: [],
+            showSoonBeFree: false,
         };
     },
     async created() {
@@ -68,6 +86,24 @@ export default {
         this.getItemsFromBackend();
     },
     methods: {
+        async appFunc() {
+            await this.httpGetWithPar(path.app).then(
+                (apps) => {
+                    console.log(apps)
+                    if (apps && apps?.length) {
+                        this.appSoonBeFree = apps;
+                        this.showSoonBeFree = true;
+                    } else {
+                        this.errMes = 'Нет данных о аппартаментах';
+                        this.showError = true;
+                    }
+                }
+            ).catch(error => {
+                const err =  error?.response?.status + error?.response?.data.message;
+                this.errMes = err;
+                this.showError = true;
+            });
+        },
         showType(id) {
             const appTypesArr = toRaw(this.appTypes);
             return appTypesArr.find(el=>el.app_type_id == id)?.app_type_name || 'Не известно';

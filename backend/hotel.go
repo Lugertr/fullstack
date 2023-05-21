@@ -35,6 +35,17 @@ type ClientUpdate struct {
 	Date_out    *string `json:"date_out"`
 }
 
+type ClientFunc struct {
+	Name          string  `json:"name" db:"name"`
+	App_id        int64   `json:"app_id" db:"app_id"`
+	Rooms         int64   `json:"rooms" db:"rooms"`
+	App_price     float64 `json:"app_price" db:"app_price"`
+	Service_total float64 `json:"service_total" db:"service_total"`
+	Discount      float64 `json:"discount" db:"discount"`
+	Services      string  `json:"services" db:"services"`
+	Cl_count_days int64   `json:"cl_count_days" db:"cl_count_days"`
+}
+
 //номера отелей
 
 type App struct {
@@ -74,6 +85,10 @@ type AppServiceUpdate struct {
 	Client_id       *int `json:"client_id"`
 	Service_type_id *int `json:"service_type_id"`
 	Days_count      *int `json:"days_count"`
+}
+
+type AppServiceTypeFunc struct {
+	Service_type_name string `json:"service_type_name" db:"service_type_name"`
 }
 
 //Типы сервисов

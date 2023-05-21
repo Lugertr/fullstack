@@ -24,9 +24,8 @@ func (r *AppServicePostgres) Create(appService hotel.AppService) (int, error) {
 	}
 
 	var id int
-	createappServiceQuery := fmt.Sprintf("INSERT INTO %s (service_id, client_id, service_type_id, days_count) VALUES ($1, $2, $3, $4) RETURNING service_id", appServiceTable)
+	createappServiceQuery := fmt.Sprintf("INSERT INTO %s (client_id, service_type_id, days_count) VALUES ($1, $2, $3) RETURNING service_id", appServiceTable)
 	row := tx.QueryRow(createappServiceQuery,
-		appService.Service_id,
 		appService.Client_id,
 		appService.Service_type_id,
 		appService.Days_count,
@@ -47,12 +46,12 @@ func (r *AppServicePostgres) GetAll() ([]hotel.AppService, error) {
 	return appServices, err
 }
 
-func (r *AppServicePostgres) GetById(appServiceId int) (hotel.AppService, error) {
-	var appService hotel.AppService
+func (r *AppServicePostgres) GetById(appServiceId int) ([]hotel.AppServiceTypeFunc, error) {
+	var appService []hotel.AppServiceTypeFunc
 
-	query := fmt.Sprintf(`SELECT * FROM %s tl WHERE tl.service_id = $1`,
-		appServiceTable)
-	err := r.db.Get(&appService, query, appServiceId)
+	query := fmt.Sprintf(`SELECT * FROM %s`,
+		serviceFunc)
+	err := r.db.Select(&appService, query)
 	return appService, err
 }
 

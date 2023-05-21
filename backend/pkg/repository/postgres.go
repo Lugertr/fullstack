@@ -17,6 +17,9 @@ const (
 	usersListsTable     = "users_list"
 	hotelItemsTable     = "hotel_items"
 	listsItemsTable     = "lists_items"
+	appFunc             = "get_today_tomorrow()"
+	serviceFunc         = "get_service_types()"
+	clientFunc          = "get_client_info($1)"
 )
 
 type Config struct {

@@ -21,7 +21,7 @@ func (s *ClientService) GetAll() ([]hotel.Client, error) {
 	return s.repo.GetAll()
 }
 
-func (s *ClientService) GetById(clientId int) (hotel.Client, error) {
+func (s *ClientService) GetById(clientId int) (hotel.ClientFunc, error) {
 	return s.repo.GetById(clientId)
 }
 

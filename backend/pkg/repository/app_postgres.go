@@ -24,9 +24,8 @@ func (r *AppPostgres) Create(app hotel.App) (int, error) {
 	}
 
 	var id int
-	createAppQuery := fmt.Sprintf("INSERT INTO %s (app_id, rooms, app_type_id, app_status, app_price) VALUES ($1, $2, $3, $4, $5) RETURNING app_id", appTable)
+	createAppQuery := fmt.Sprintf("INSERT INTO %s (rooms, app_type_id, app_status, app_price) VALUES ($1, $2, $3, $4) RETURNING app_id", appTable)
 	row := tx.QueryRow(createAppQuery,
-		app.App_id,
 		app.Rooms,
 		app.App_type_id,
 		app.AppStatus,
@@ -48,12 +47,12 @@ func (r *AppPostgres) GetAll() ([]hotel.App, error) {
 	return apps, err
 }
 
-func (r *AppPostgres) GetById(appId int) (hotel.App, error) {
-	var app hotel.App
+func (r *AppPostgres) GetById(appId int) ([]hotel.App, error) {
+	var app []hotel.App
 
-	query := fmt.Sprintf(`SELECT * FROM %s tl WHERE tl.app_id = $1`,
-		appTable)
-	err := r.db.Get(&app, query, appId)
+	query := fmt.Sprintf(`SELECT * FROM %s`,
+		appFunc)
+	err := r.db.Select(&app, query)
 	return app, err
 }
 

@@ -24,9 +24,8 @@ func (r *AppServiceTypePostgres) Create(serviceType hotel.AppServiceType) (int, 
 	}
 
 	var id int
-	createclientQuery := fmt.Sprintf("INSERT INTO %s (service_type_id, service_type_name, price) VALUES ($1, $2, $3) RETURNING service_type_id", appServiceTypeTable)
+	createclientQuery := fmt.Sprintf("INSERT INTO %s (service_type_name, price) VALUES ($1, $2) RETURNING service_type_id", appServiceTypeTable)
 	row := tx.QueryRow(createclientQuery,
-		serviceType.Service_type_id,
 		serviceType.Service_type_name,
 		serviceType.Price,
 	)

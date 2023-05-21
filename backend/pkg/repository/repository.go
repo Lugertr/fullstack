@@ -14,7 +14,7 @@ type Authorization interface {
 type Client interface {
 	Create(client hotel.Client) (int, error)
 	GetAll() ([]hotel.Client, error)
-	GetById(client_id int) (hotel.Client, error)
+	GetById(client_id int) (hotel.ClientFunc, error)
 	Delete(client_id int) error
 	Update(client_id int, input hotel.ClientUpdate) error
 }
@@ -22,7 +22,7 @@ type Client interface {
 type App interface {
 	Create(app hotel.App) (int, error)
 	GetAll() ([]hotel.App, error)
-	GetById(app_id int) (hotel.App, error)
+	GetById(app_id int) ([]hotel.App, error)
 	Delete(app_id int) error
 	Update(app_id int, input hotel.AppUpdate) error
 }
@@ -38,7 +38,7 @@ type AppType interface {
 type AppService interface {
 	Create(appService hotel.AppService) (int, error)
 	GetAll() ([]hotel.AppService, error)
-	GetById(AppServiceId int) (hotel.AppService, error)
+	GetById(AppServiceId int) ([]hotel.AppServiceTypeFunc, error)
 	Delete(AppServiceId int) error
 	Update(AppServiceId int, input hotel.AppServiceUpdate) error
 }

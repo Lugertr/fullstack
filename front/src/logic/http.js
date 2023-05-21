@@ -23,6 +23,23 @@ export const httpMixin = {
     ...mapGetters(['token', 'token'])
   },
   methods: {
+    async httpGetWithPar(url, config = {},id=1) {
+      const token = this.token; 
+      console.log(id);
+      return axios.get(`${this.apiUrl}${url}/${id}`, {
+        ...config,
+        headers: {
+          ...this.headers,
+          'Authorization': `Bearer ${token}` 
+        }
+      }).then((responce)=>{
+        return responce.data
+      })
+      .catch(error=>{
+        console.error(error);
+        throw new Error;
+      });
+  },
     async httpGet(url, config = {}) {
         const token = this.token; 
         return axios.get(`${this.apiUrl}${url}`, {

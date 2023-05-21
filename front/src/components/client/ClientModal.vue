@@ -52,6 +52,7 @@ export default {
             isNew: true,
             dialog: false,
             isFree: true,
+            currentid: null,
             apps: [],
             genderOptions: ['Male', 'Famale'],
             form: {
@@ -84,6 +85,8 @@ export default {
             this.form.app_id = this.apps.find(el=>el.app_id == selectedItem?.app_id).app_id || null;
             this.form.date_in = selectedItem?.date_in || null;
             this.form.date_out = selectedItem?.date_out || null;
+
+            this.currentid = this.form.app_id;
         } else {
             this.form.client_id = this.length;
         }
@@ -110,6 +113,7 @@ export default {
         async save() {
             try {
                 const body = { ...this.form}
+                console.log(body)
                 if (!this.isNew) {
                     const id = body.client_id;
                     delete body["client_id"];
@@ -132,7 +136,7 @@ export default {
                 form: {
                     handler(val){
                         const app = this.apps.find(el=>el.app_id == val.app_id);
-                        if (app?.app_status) {
+                        if (app?.app_status && (this.currentid !== this.form.app_id)) {
                             this.isFree = false;
                         } else {
                             this.isFree = true;

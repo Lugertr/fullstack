@@ -24,9 +24,8 @@ func (r *ClientPostgres) Create(client hotel.Client) (int, error) {
 	}
 
 	var id int
-	createclientQuery := fmt.Sprintf("INSERT INTO %s (client_id, client_name,family_name,surname,passport,gender,app_id,date_in,date_out) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING client_id", clientTable)
+	createclientQuery := fmt.Sprintf("INSERT INTO %s (client_name,family_name,surname,passport,gender,app_id,date_in,date_out) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING client_id", clientTable)
 	row := tx.QueryRow(createclientQuery,
-		client.Client_id,
 		client.Client_name,
 		client.Family_name,
 		client.Surname,
@@ -52,11 +51,11 @@ func (r *ClientPostgres) GetAll() ([]hotel.Client, error) {
 	return clients, err
 }
 
-func (r *ClientPostgres) GetById(clientId int) (hotel.Client, error) {
-	var client hotel.Client
+func (r *ClientPostgres) GetById(clientId int) (hotel.ClientFunc, error) {
+	var client hotel.ClientFunc
 
-	query := fmt.Sprintf(`SELECT * FROM %s tl WHERE tl.client_id = $1`,
-		clientTable)
+	query := fmt.Sprintf(`SELECT * FROM %s`,
+		clientFunc)
 	err := r.db.Get(&client, query, clientId)
 	return client, err
 }

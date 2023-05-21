@@ -21,7 +21,7 @@ func (s *AppServiceService) GetAll() ([]hotel.AppService, error) {
 	return s.repo.GetAll()
 }
 
-func (s *AppServiceService) GetById(AppServiceId int) (hotel.AppService, error) {
+func (s *AppServiceService) GetById(AppServiceId int) ([]hotel.AppServiceTypeFunc, error) {
 	return s.repo.GetById(AppServiceId)
 }
 
