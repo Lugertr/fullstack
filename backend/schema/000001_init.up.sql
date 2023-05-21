@@ -176,24 +176,26 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION get_client_services(val_client_id numeric) RETURNS TEXT AS $$
-DECLARE
-  services TEXT := '';
-  row Record;
-BEGIN
-  FOR row IN SELECT st.service_type_id, st.service_type_name, s.days_count, st.price
-            FROM service_table s
-            JOIN service_type_table st ON s.service_type_id = st.service_type_id
-            WHERE s.client_id = val_client_id
-            ORDER BY s.service_type_id
-  LOOP
-    services := services || row.service_type_id || ' ' || row.service_type_name || ' ' || row.price || ', ';
-  END LOOP;
-  IF LENGTH(services) > 2 THEN
-    services := SUBSTRING(services, 1, LENGTH(services) - 2);
-  END IF;
-  RETURN services;
-END;
+CREATE OR REPLACE FUNCTION get_client_services(val_client_id numeric) 
+RETURNS TEXT AS $$
+DECLARE 
+	services TEXT := ''; 
+	row Record; 
+BEGIN 
+	FOR row IN SELECT st.service_type_id, st.service_type_name, s.days_count, st.price 
+	FROM service_table s 
+	JOIN service_type_table st 
+	ON s.service_type_id = st.service_type_id 
+	WHERE s.client_id = val_client_id 
+	ORDER BY s.service_type_id 
+	LOOP 
+		services := services || row.service_type_id || ' ' || row.service_type_name || ' ' || row.price || ' ' || row.days_count || ', '; 
+	END LOOP; 
+	IF LENGTH(services) > 2 THEN 
+		services := SUBSTRING(services, 1, LENGTH(services) - 2); 
+	END IF; 
+RETURN services; 
+END; 
 $$ LANGUAGE plpgsql;
 
 
@@ -363,7 +365,25 @@ BEGIN
 	END IF; RETURN NEW; END; 
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER date_check_trigger BEFORE INSERT OR UPDATE ON client_table FOR EACH ROW EXECUTE FUNCTION check_date();
+CREATE TRIGGER date_check_trigger 
+BEFORE INSERT OR UPDATE ON client_table 
+FOR EACH ROW 
+EXECUTE FUNCTION check_date();
+
+CREATE OR REPLACE FUNCTION check_service_type_exists() RETURNS TRIGGER AS $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM service_table WHERE client_id = NEW.client_id AND service_type_id = NEW.service_type_id) THEN
+    RAISE EXCEPTION 'Service type already exists for this client';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER service_table_check_service_type_exists
+BEFORE INSERT ON service_table
+FOR EACH ROW
+EXECUTE FUNCTION check_service_type_exists();
+
 
 
 INSERT INTO users (name, username, password_hash,acc_status) VALUES ('admin', 'admin', '686a7172686a7177313234363137616a6668616a738c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','true');

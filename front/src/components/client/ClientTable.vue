@@ -110,12 +110,13 @@ export default {
                             console.log(client.services)
                             client.services = client.services.split(',').map(str=>{
                                 str = str.split(' ');
+                                let day_count = str.pop();
                                 let newStr = 'услуга: ';
-                                while (str.length > 2) {
+                                while (str.length > 1) {
                                     newStr+=str.shift() + ' ';
                                 }
-                                newStr+=`, длительность: ${str.shift()}`;
-                                newStr+=`, стоимость: ${str.shift()};`;
+                                newStr+=`, длительность: ${day_count}`;
+                                newStr+=`, стоимость: ${str.pop()};`;
                                 return newStr;
                             })
                             for (let str of client.services) {

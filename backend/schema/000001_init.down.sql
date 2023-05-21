@@ -3,6 +3,7 @@ DROP TRIGGER IF EXISTS insert_client_trigger ON client_table;
 DROP TRIGGER IF EXISTS update_client_trigger ON client_table;
 DROP TRIGGER IF EXISTS delete_client_trigger ON client_table;
 DROP TRIGGER IF EXISTS date_check_trigger ON client_table;
+DROP TRIGGER IF EXISTS service_table_check_service_type_exists ON service_table;
 
 DROP FUNCTION IF EXISTS get_client_info(cur_client_id numeric); --Вернуть чек клиента
 DROP FUNCTION IF EXISTS get_client_services(client_id numeric);
@@ -14,6 +15,7 @@ DROP FUNCTION IF EXISTS update_app_table_on_insert();
 DROP FUNCTION IF EXISTS update_app_table_on_update();
 DROP FUNCTION IF EXISTS update_app_table_on_delete();
 DROP FUNCTION IF EXISTS check_date();
+DROP FUNCTION IF EXISTS check_service_type_exists();
 
 DROP TABLE IF EXISTS service_table;
 DROP TABLE IF EXISTS service_type_table;
